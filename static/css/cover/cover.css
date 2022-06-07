@@ -1,0 +1,60 @@
+/*
+ * Globals
+ */
+
+
+/* Custom default button */
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+  color: #333;
+  text-shadow: none; /* Prevent inheritance from `body` */
+}
+/*
+ * Base structure
+ */
+
+html {
+  height: 100%;
+}
+
+body {
+  vertical-align: top !important;
+  text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+  background: linear-gradient(-45deg, rgb(177, 220, 218), rgb(188, 236, 234)) no-repeat;
+  min-height: 100%;
+  background-size: 100%;
+  background-attachment: fixed;
+}
+
+.cover-container {
+  max-width: 42em;
+}
+
+
+/*
+ * Header
+ */
+
+.nav-masthead .nav-link {
+  padding: .25rem 0;
+  font-weight: 700;
+  font-size: large;
+  color: rgba(54, 52, 52, 0.847);
+  background-color: transparent;
+  border-bottom: .25rem solid transparent;
+}
+
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+  border-bottom-color: rgba(54, 52, 52, 0.847);
+}
+
+.nav-masthead .nav-link + .nav-link {
+  margin-left: 1rem;
+}
+
+.nav-masthead .active {
+  color: rgba(79, 76, 76, 1.0);
+  border-bottom-color: rgb(54, 52, 52);
+}

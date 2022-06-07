@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block style_additions %}
+  <style>
+    #main_content {
+      text-align: justify !important;
+      text-justify: inter-word !important;
+      vertical-align: top !important;
+      min-height: 100%;
+      color: rgba(54, 52, 52, 0.847);
+    }
+
+    #first_simulation_panel {
+      text-align: center !important;
+    }
+
+    .grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    background-color: rgba(161, 158, 158, 0.338);
+    padding: 10px;
+    }
+  
+    .grid-item {
+    padding: 5px;
+    font-size: 16px;
+    text-align: center;
+    color: rgba(54, 52, 52, 0.847);
+    }
+
+    .download {
+      background-color: rgba(66, 64, 64, 0.847);
+      color:rgb(207, 205, 205);
+      padding: 2px;
+      border: solid 0.5px rgba(30, 30, 30, 0.847);
+    }
+  </style>
+{% endblock %}
+
+{% block menu %}
+<a class="nav-link" href='http://127.0.0.1:5000/'>Optimize</a>
+<a class="nav-link" href='http://127.0.0.1:5000/about-us'>About us</a>
+<a class="nav-link active" aria-current="page" href='http://127.0.0.1:5000/login'>Account</a>
+<a class="nav-link" href='http://127.0.0.1:5000/logout'>Log out</a>
+{% endblock %}
+
+{% block main_content %}
+  <div id="main_content">
+    <br><br>
+      <h5>You are logged as {{ current_user.email }}</h5>
+      {% if solutions_of_user|length == 0 %}
+        <br><br><br><br><br>
+        <div id="first_simulation_panel">
+        You don't have any saved solutions yet. Run your simulation here!
+        <br><br>
+        <button class="w-100 btn btn-lg btn-primary" onclick="window.location.href='http://127.0.0.1:5000/'" style="width: 40% !important; border-color:rgba(0, 0, 0, 0.8) !important;background-color: rgb(67, 58, 67) !important;">Your own simulation</button>
+        </div>
+        <br><br><br><br><br><br><br><br><br><br>
+      {% endif %}
+
+      <input name="" id="solution_size" value="{{solutions_of_user|length}}" type="hidden">
+
+      {% for (i, solution) in solutions_of_user %}
+
+      <input name="" id="genotype{{ i }}" value="{{solution.solution}}" type="hidden">
+      <input name="" id="name{{ i }}" value="{{solution.name}}" type="hidden">
+      
+      <br><br>
+      <h6>Solution for file {{ solution.name }}.txt</h6>
+      <div class="grid-container">
+
+          <div class="grid-item">Solution genotype:</div>
+          <div class="grid-item"><button class="w-100 btn btn-lg btn-primary" id="button{{ i }}" style="width: 70% !important; padding: 1px !important; font-size: 13px !important; border-color:rgba(0, 0, 0, 0.8) !important;background-color: rgb(67, 58, 67) !important;">Download</button> </div>
+
+          <div class="grid-item">Percentage of fullfilled clauses:</div>
+          <div class="grid-item"> {{ solution.percentage }} </div>
+
+          <div class="grid-item">Size of population:</div>
+          <div class="grid-item"> {{ solution.size_population }} </div>
+
+          <div class="grid-item">Number of populations:</div>
+          <div class="grid-item"> {{ solution.number_populations }} </div>
+
+          <div class="grid-item">Number of parents considered:</div>
+          <div class="grid-item"> {{ solution.number_parents }} </div>
+
+          <div class="grid-item">Probability of crossover:</div>
+          <div class="grid-item"> {{ solution.probability_crossover }} </div>
+
+          <div class="grid-item">Probability of gene crossover:</div>
+          <div class="grid-item"> {{ solution.probability_gene_crossover }} </div>
+
+          <div class="grid-item">Probability of smart mutation:</div>
+          <div class="grid-item"> {{ solution.probability_smart_mutation }} </div>
+
+          <div class="grid-item">Probability of gene mutation:</div>
+          <div class="grid-item"> {{ solution.probability_gene_mutation }} </div>
+
+          <div class="grid-item">Run time:</div>
+          <div class="grid-item"> {{ solution.run_time }} seconds</div>
+    </div>
+    {% endfor %}
+
+    <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) { 
+      function assignButtons(){
+      
+      var value_genotype = ""
+     
+      for(i = 0; i < document.getElementById('solution_size').value; i++){
+        
+        value_genotype = document.getElementById(`genotype${i}`).value
+        value_name = document.getElementById(`name${i}`).value
+        
+        document.getElementById(`button${i}`).onclick=(function(text, name){ return function(){
+            var fileName = 'solution_' + name
+            var fileType = '.txt'
+            var blob = new Blob([text], { type: fileType });
+          
+            var a = document.createElement('a');
+            a.download = fileName;
+            a.href = URL.createObjectURL(blob);
+            a.dataset.downloadurl = [fileType, a.download, a.href].join(':');
+            a.style.display = "none";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(function() { URL.revokeObjectURL(a.href); }, 1500);
+        }})(value_genotype, value_name);
+      }}
+        assignButtons();
+    })
+  </script>
+      
+    <br><br>
+  </div>
+{% endblock %}

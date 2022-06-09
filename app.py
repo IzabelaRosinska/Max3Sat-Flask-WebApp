@@ -273,7 +273,7 @@ def account():
 		active_simulations[session["id"]] = False
 
 	if not current_user.is_authenticated:
-			return redirect('/login')
+		return redirect('/login')
 
 	solutions_of_user = Solution.query.filter_by(user_id=current_user.id).all()
 

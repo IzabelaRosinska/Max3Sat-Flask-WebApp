@@ -1,4 +1,4 @@
-import random, copy
+import random
 from individual import *
 from problem import *
 
@@ -58,7 +58,6 @@ class Optimizer:
                 population[-1].set_random_values()
 
             self.find_best(population)
-
             self._populations.append(population)
 
     def run_iteration(self):
@@ -87,7 +86,6 @@ class Optimizer:
             new_population.append(child2)
 
         population = new_population
-
         self.find_best(population)
 
     def choose_parent(self, population):
@@ -126,5 +124,4 @@ class Optimizer:
 
         if fitness_of_fittest > self._current_best_individual_fitness:
             self._current_best_individual_fitness = fitness_of_fittest
-
             self._best_found = population[index_of_fittest]

@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block style_additions %}
+  <style>
+    .grid-container {
+      display: grid;
+      grid-template-columns: auto auto;
+      background-color: rgba(161, 158, 158, 0.338);
+      padding: 10px;
+    }
+    
+    .grid-item {
+      padding: 15px;
+      font-size: 16px;
+      text-align: center;
+      color: rgba(54, 52, 52, 0.847)
+    }
+
+    .form-param {
+      background-color: rgba(161, 158, 158, 0.338);
+      border: 1px solid rgba(0, 0, 0, 0.8);
+      font-size: 18px;
+      color: rgba(54, 52, 52, 0.847);
+      width: 240px;
+    }
+
+    #main-content {
+      vertical-align: top !important;
+      color: rgba(54, 52, 52, 0.847);
+    }
+
+    .countdown {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      font-weight: 700;
+      margin: 0;
+      height: 70px;
+    }
+  </style>
+{% endblock %}
+
+{% block menu %}
+  <a class="nav-link active" aria-current="page" href='http://127.0.0.1:5000/'>Optimize</a>
+  <a class="nav-link" href='http://127.0.0.1:5000/about-us'>About us</a>
+  {% if current_user.is_authenticated %}
+    <a class="nav-link" href='http://127.0.0.1:5000/login'>Account</a>
+    <a class="nav-link" href='http://127.0.0.1:5000/logout'>Log out</a>
+  {% else %}
+    <a class="nav-link" href='http://127.0.0.1:5000/login'>Log in</a>
+  {% endif %}
+{% endblock %}
+
+{% block main_content %}
+<div id="main-content">
+  <p class="countdown" id="countdown"></p>
+
+    <script>
+      // function starts displaying countdown when all rubrics of form are correctly filled
+      function startCountdown() {
+        var time = document.getElementById('run_time').value;
+        var size_population = document.getElementById('size_population').value;
+        var number_populations = document.getElementById('number_populations').value;
+        var number_parents = document.getElementById('number_parents').value;
+        var probability_crossover = document.getElementById('probability_crossover').value;
+        var probability_gene_crossover = document.getElementById('probability_gene_crossover').value;
+        var probability_smart_mutation = document.getElementById('probability_smart_mutation').value;
+        var probability_gene_mutation = document.getElementById('probability_gene_mutation').value;
+        var file_problem = document.getElementById('file_problem').value;
+        
+        // validate file_problem
+        if (file_problem == 0) {
+          return ;
+        }
+
+        // validate time
+        if (time < 10 || time > 600) {
+          return ;
+        }
+
+        // validate size_population
+        if (size_population < 10 || size_population > 200) {
+          return ;
+        }
+
+        // validate number_populations
+        if (number_populations < 1 || number_populations > 5) {
+          return ;
+        }
+
+        // validate number_parents
+        if (number_parents < 2 || number_parents > 5) {
+          return ;
+        }
+
+        // validate probability_crossover
+        if (probability_crossover < 0.1 || probability_crossover > 1.0) {
+          return ;
+        }
+
+        // validate probability_gene_crossover
+        if (probability_gene_crossover < 0.1 || probability_gene_crossover > 1.0) {
+          return ;
+        }
+
+        // validate probability_smart_mutation
+        if (probability_smart_mutation < 0.1 || probability_smart_mutation > 1.0) {
+          return ;
+        }
+
+        // validate probability crossover
+        if (probability_gene_mutation < 0.1 || probability_gene_mutation > 1.0) {
+          return ;
+        }
+        
+        // adjust view to simulation
+        $('html,body').scrollTop(0);
+        var countdownEl = document.getElementById('countdown');
+        setInterval(updateCountdown, 1000);
+        $("#otpimize-btn").hide();
+      
+        function updateCountdown() {
+          if (time >= 0) {
+          var minutes = Math.floor( time / 60);
+          var seconds = time % 60;
+          
+          seconds = seconds < 10 ? '0' + seconds : seconds
+      
+          countdownEl.innerHTML = `${minutes}:${seconds}`;
+          time--;}
+      }}
+    </script>
+
+    <h5>Run your own simulation</h5>
+    <form id="otpimize-form" action="" method="POST" enctype="multipart/form-data">
+      <div class="grid-container">
+        <div class="grid-item">Size of population:</div>
+        <div class="grid-item">
+          <input id="size_population" type="number" min="10" max="200" name="size_population" class="form-param" placeholder="{10, 11, ..., 200}" required>
+        </div>
+
+        <div class="grid-item">Number of populations:</div>
+        <div class="grid-item">
+          <input id="number_populations" type="number" min="1" max="5" name="number_populations" class="form-param" placeholder="{1, 2, ..., 5}" required>
+        </div>
+
+        <div class="grid-item">Number of parents considered:</div>
+        <div class="grid-item">
+          <input id="number_parents" type="number" min="2" max="5" name="number_parents" class="form-param" placeholder="{2, 3, ..., 5}" required>
+        </div>
+
+        <div class="grid-item">Probability of crossover:</div>
+        <div class="grid-item">
+          <input id="probability_crossover" type=number step=0.01 min="0.1" max="1.0" name="probability_crossover" class="form-param" placeholder="[0.1, 1.0]" required>
+        </div>
+
+        <div class="grid-item">Probability of gene crossover:</div>
+        <div class="grid-item">
+          <input id="probability_gene_crossover" type=number step=0.01 min="0.1" max="1.0" name="probability_gene_crossover" class="form-param" placeholder="[0.1, 1.0]" required>
+        </div>
+
+        <div class="grid-item">Probability of smart mutation:</div>
+        <div class="grid-item">
+          <input id="probability_smart_mutation" type=number step=0.01 min="0.1" max="1.0" name="probability_smart_mutation" class="form-param" placeholder="[0.1, 1.0]" required>
+        </div>
+
+        <div class="grid-item">Probability of gene mutation:</div>
+        <div class="grid-item">
+          <input id="probability_gene_mutation" type=number step=0.01 min="0.1" max="1.0" name="probability_gene_mutation" class="form-param" placeholder="[0.1, 1.0]" required>
+        </div>
+
+        <div class="grid-item">Run time:</div>
+        <div class="grid-item">
+          <input id="run_time" type="number" min="10" max="600" name="run_time" class="form-param" placeholder="{10, 11, ..., 600} seconds" required>
+        </div>
+
+        <div class="grid-item">Choose file to upload</div>
+        <div class="grid-item">
+          <input id="file_problem" type="file" name="file_problem" accept=".txt" style="width: 240px;" required>
+        </div>       
+      </div>
+
+      <br>
+      <button id="otpimize-btn" class="w-100 btn btn-lg btn-primary" id="optimize" type="submit" onclick="startCountdown()" style="width: 40% !important; border-color:rgba(0, 0, 0, 0.8) !important;background-color: rgb(67, 58, 67) !important;">Optimize</button>
+    </form>
+
+  <br><br><br><br>
+  
+</div> 
+{% endblock %}

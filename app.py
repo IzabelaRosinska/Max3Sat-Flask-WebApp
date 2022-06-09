@@ -344,13 +344,13 @@ def save():
 	percentage=session["percentage"],
 	solution=session["coded_genotype"],
 	size_population=session["size_population"],
-    number_populations=session["number_populations"],
-    number_parents=session["number_parents"],
-    probability_crossover=session["probability_crossover"],
-    probability_gene_crossover=session["probability_gene_crossover"],
-    probability_smart_mutation=session["probability_smart_mutation"],
-    probability_gene_mutation=session["probability_gene_mutation"],
-    run_time=session["run_time"])
+	number_populations=session["number_populations"],
+	number_parents=session["number_parents"],
+	probability_crossover=session["probability_crossover"],
+	probability_gene_crossover=session["probability_gene_crossover"],
+	probability_smart_mutation=session["probability_smart_mutation"],
+	probability_gene_mutation=session["probability_gene_mutation"],
+	run_time=session["run_time"])
 
 	db.session.add(solution)
 	db.session.commit()

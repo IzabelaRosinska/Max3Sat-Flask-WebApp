@@ -13,7 +13,8 @@ app = Flask(__name__)
 app.secret_key = "5af7bbcaa06c3affd04111afb4be6749dc49fd16b46df68605285b6c800bd780192b9bdd22ab9ed4d12e236c78afcb9a393ec15f71bbf5dc987d54727823bcbf"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///max3sat.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-  
+app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
+
 db.init_app(app)
 login.init_app(app)
 login.login_view = 'login'
@@ -52,6 +53,11 @@ def run_experiment(problem, size_of_population, number_of_populations, probabili
 def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 	'''Generates id of given size (size) and set of characaters (chars).'''
 	return ''.join(random.choice(chars) for _ in range(size))
+
+@app.before_first_request
+def create_all():
+	'''Creates database.'''
+	db.create_all()
 
 @app.route("/", methods=["POST", "GET"])
 def home():
@@ -170,11 +176,6 @@ def aboutus():
 		active_simulations[session["id"]] = False
 
 	return render_template("about_us.html")
-
-@app.before_first_request
-def create_all():
-	'''Creates database.'''
-	db.create_all()
  
 @app.route('/login', methods=['POST','GET'])
 def login():
@@ -324,6 +325,11 @@ def get_file():
 	else:
 		flash("No solutions to download.")
 		return redirect("/")
+
+@app.errorhandler(413)
+def request_entity_too_large(error):
+	flash("File size is too big. Max file size is 5 MB.")
+	return redirect("/")
 
 @app.route('/save-solution')
 def save():

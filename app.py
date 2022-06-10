@@ -25,7 +25,8 @@ active_simulations = dict()
 
 UPLOAD_FOLDER = 'static/uploads/'
 
-def run_experiment(problem, size_of_population, number_of_populations, probability_of_smart_mutation, probability_of_gene_mutation, probability_of_crossover, probability_of_cross_gene, number_of_parents_considered, max_time):
+def run_experiment(problem, size_of_population, number_of_populations, probability_of_smart_mutation, probability_of_gene_mutation, 
+	probability_of_crossover, probability_of_cross_gene, number_of_parents_considered, max_time):
 	'''Runs optimization for specified amount of time. If user changes webpage optimization stops.
 	Returns tuple:
 	first element - number of fulfilled clauses
@@ -33,7 +34,8 @@ def run_experiment(problem, size_of_population, number_of_populations, probabili
 	third element - solution genotype'''
 
 	start_time = time.time()
-	optimizer = Optimizer(problem, size_of_population, number_of_populations, probability_of_smart_mutation, probability_of_gene_mutation, probability_of_crossover, probability_of_cross_gene, number_of_parents_considered)
+	optimizer = Optimizer(problem, size_of_population, number_of_populations, probability_of_smart_mutation, 
+			probability_of_gene_mutation, probability_of_crossover, probability_of_cross_gene, number_of_parents_considered)
 	optimizer.initialize()
 	
 	max_time_running = max_time
@@ -146,7 +148,9 @@ def home():
 
 		# assign True to active simulation before start of simulation
 		active_simulations[session["id"]] = True
-		result = run_experiment(problem, session["size_population"], session["number_populations"], session["probability_smart_mutation"], session["probability_gene_mutation"], session["probability_crossover"], session["probability_gene_crossover"], session["number_parents"], session["run_time"])
+		result = run_experiment(problem, session["size_population"], session["number_populations"], session["probability_smart_mutation"], 
+			session["probability_gene_mutation"], session["probability_crossover"], session["probability_gene_crossover"], 
+			session["number_parents"], session["run_time"])
 
 		session["coded_genotype"] = result[2]
 		session["percentage"] = result[1]
@@ -300,9 +304,19 @@ def last_result():
 
 	if "coded_genotype" in session:
 		if current_user.is_authenticated:
-			return render_template('result_auth.html', file_name=session["file_user_name"], percentage=session["percentage"], number_fullfilled_clauses=session["fulfilled_clauses"], number_clauses=session["number_of_clauses"], result=session["coded_genotype"], size_population=session["size_population"], number_populations=session["number_populations"], probability_smart_mutation=session["probability_smart_mutation"], probability_gene_mutation=session["probability_gene_mutation"], probability_crossover=session["probability_crossover"], probability_gene_crossover=session["probability_gene_crossover"], number_parents=session["number_parents"], run_time=session["run_time"])
+			return render_template('result_auth.html', file_name=session["file_user_name"], percentage=session["percentage"],
+				number_fullfilled_clauses=session["fulfilled_clauses"], number_clauses=session["number_of_clauses"], 
+				result=session["coded_genotype"], size_population=session["size_population"], number_populations=session["number_populations"], 
+				probability_smart_mutation=session["probability_smart_mutation"], probability_gene_mutation=session["probability_gene_mutation"], 
+				probability_crossover=session["probability_crossover"], probability_gene_crossover=session["probability_gene_crossover"], 
+				number_parents=session["number_parents"], run_time=session["run_time"])
 		else:
-			return render_template('result.html', file_name=session["file_user_name"], percentage=session["percentage"], number_fullfilled_clauses=session["fulfilled_clauses"], number_clauses=session["number_of_clauses"], result=session["coded_genotype"], size_population=session["size_population"], number_populations=session["number_populations"], probability_smart_mutation=session["probability_smart_mutation"], probability_gene_mutation=session["probability_gene_mutation"], probability_crossover=session["probability_crossover"], probability_gene_crossover=session["probability_gene_crossover"], number_parents=session["number_parents"], run_time=session["run_time"])
+			return render_template('result.html', file_name=session["file_user_name"], percentage=session["percentage"], 
+				number_fullfilled_clauses=session["fulfilled_clauses"], number_clauses=session["number_of_clauses"], result=session["coded_genotype"], 
+				size_population=session["size_population"], number_populations=session["number_populations"], 
+				probability_smart_mutation=session["probability_smart_mutation"], probability_gene_mutation=session["probability_gene_mutation"], 
+				probability_crossover=session["probability_crossover"], probability_gene_crossover=session["probability_gene_crossover"], 
+				number_parents=session["number_parents"], run_time=session["run_time"])
 	else:
 		flash("No solutions to view.")
 		return redirect('/')

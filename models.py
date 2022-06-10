@@ -53,4 +53,6 @@ class Solution(db.Model):
     solution = db.Column(db.String(1000), nullable=False)
 
     def __repr__(self):
-        return "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s" % (self.name, self.percentage, self.size_population, self.number_populations, self.number_parents, self.probability_crossover, self.probability_gene_crossover, self.probability_smart_mutation, self.probability_gene_mutation, self.run_time, self.solution)
+        return "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s" % (self.name, self.percentage, self.size_population, 
+                self.number_populations, self.number_parents, self.probability_crossover, self.probability_gene_crossover, 
+                self.probability_smart_mutation, self.probability_gene_mutation, self.run_time, self.solution)

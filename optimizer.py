@@ -8,7 +8,8 @@ class Optimizer:
     Stores information about populations and allows their evolution.
     Manages optimization of solutions to the problem.'''
 
-    def __init__(self, problem, size_of_population, number_of_populations, probability_of_smart_mutation, probability_of_gene_mutation, probability_of_crossover, probability_of_cross_gene, number_of_parents_considered):
+    def __init__(self, problem, size_of_population, number_of_populations, probability_of_smart_mutation, probability_of_gene_mutation,
+        probability_of_crossover, probability_of_cross_gene, number_of_parents_considered):
         '''Object manages optimization of solutions to the problem. 
         As arguments takes:
         problem - Problem object containing information about the problem structure

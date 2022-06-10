@@ -328,6 +328,7 @@ def get_file():
 
 @app.errorhandler(413)
 def request_entity_too_large(error):
+	'''Handle too big files.'''
 	flash("File size is too big. Max file size is 5 MB.")
 	return redirect("/")
 
